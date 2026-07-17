@@ -1,3 +1,4 @@
+from backend.services.audio_processor import process_audio
 from pathlib import Path
 from uuid import uuid4
 
@@ -53,10 +54,13 @@ async def upload_audio(file: UploadFile = File(...)):
     finally:
         await file.close()
 
+    audio_info = process_audio(str(destination))
+
     return {
-        "message": "Audio file uploaded successfully",
-        "original_filename": file.filename,
-        "saved_filename": unique_filename,
-        "content_type": file.content_type,
-        "size_bytes": len(file_content),
+    "message": "Audio processed successfully",
+    "original_filename": file.filename,
+    "saved_filename": unique_filename,
+    "content_type": file.content_type,
+    "size_bytes": len(file_content),
+    "audio_information": audio_info,
     }
