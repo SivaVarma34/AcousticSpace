@@ -71,6 +71,13 @@ def process_audio(audio_path: str) -> dict:
     plt.tight_layout()
     plt.savefig(spectrogram_path)
     plt.close()
+    # ---------------- Save MFCC Features ----------------
+
+    feature_path = OUTPUT_DIR.parent / "features" / "mfcc_features.npy"
+
+    feature_path.parent.mkdir(parents=True, exist_ok=True)
+
+    np.save(feature_path, mfcc_features)
 
     # ---------------- MFCC ----------------
     mfcc_path = OUTPUT_DIR / "mfcc.png"
@@ -99,4 +106,5 @@ def process_audio(audio_path: str) -> dict:
             int(mfcc_features.shape[0]),
             int(mfcc_features.shape[1]),
         ],
+        "mfcc_feature_file": str(feature_path),
     }
